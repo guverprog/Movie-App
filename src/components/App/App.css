@@ -1,0 +1,49 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 22px; 
+}
+.container{
+    margin: 0 auto;
+    min-height: 100vh;
+    max-width: 1010px;
+    background-color: #fff;
+}
+.spinner {
+  margin: 10% auto;
+  display: block;
+}
+.offline{
+  margin: 10% auto;
+  font-size: 30px;
+}
+.pagination {
+  text-align: center !important;
+  padding-top: 36px;
+}
+.pagination li {
+  border: none;
+}
+.pagination li > button {
+  border: none !important;
+}
+.ant-pagination-item-active {
+  background-color: #1890ff;
+  border-radius: 4px;
+}
+
+.ant-pagination-item-active a {
+  color: #ffffff;
+}
+
+.pagination li:hover a {
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
