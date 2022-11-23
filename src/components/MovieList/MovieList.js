@@ -5,7 +5,7 @@ import { Alert } from 'antd';
 
 import cutText from '../../Handlers/CutText';
 import MovieListItem from '../MovieListItem/MovieListItem';
-import transformDate from '../../Handlers/transformDate';
+import { transformDate } from '../../Handlers/transformDate';
 
 import poster from './poster.jpeg';
 
@@ -15,7 +15,8 @@ function MovieList({ movies }) {
   }
   const elements = movies.map((el) => {
     const newEl = transformDate(el);
-    const { id, posterPath, originalTitle, releaseDate, overview } = newEl;
+    const { movieId, posterPath, originalTitle, releaseDate, overview, voteAverage, genreIds, ratingStar } = newEl;
+
     let posterMovie = `https://image.tmdb.org/t/p/w500/${posterPath}`;
     if (!posterPath) {
       posterMovie = poster;
@@ -26,7 +27,17 @@ function MovieList({ movies }) {
     }
     const cutDescription = cutText(overview, 80);
     return (
-      <MovieListItem key={id} image={posterMovie} title={originalTitle} date={dateFns} description={cutDescription} />
+      <MovieListItem
+        key={movieId}
+        image={posterMovie}
+        title={originalTitle}
+        date={dateFns}
+        description={cutDescription}
+        voteAverage={voteAverage}
+        genreIds={genreIds}
+        ratingStar={ratingStar}
+        movieId={movieId}
+      />
     );
   });
   return <section className="movie-list">{elements}</section>;

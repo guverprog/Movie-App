@@ -26,6 +26,7 @@ body {
 .pagination {
   text-align: center !important;
   padding-top: 36px;
+  padding-bottom: 15px;
 }
 .pagination li {
   border: none;

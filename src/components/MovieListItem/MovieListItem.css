@@ -4,15 +4,31 @@
     margin: 35px 0 0 33px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
     display: flex;
+    overflow: hidden;
+    position: relative;
 }
 .movie-list__item-right{
     margin-left: 20px;
 }
+.item__header{
+    display: flex;
+}
 .item__title{
+    width: 75%;
     font-size: 20px;
     line-height: 28px;
     margin-top: 12px;
     margin-bottom: 7px;
+}
+.item__average-vote{
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    line-height: 25px;
+    border-radius: 50%;
+    text-align:center;
 }
 .item__data{
     color: #827E7E;
@@ -32,6 +48,18 @@
 }
 .error{
     margin: 10px auto;
+}
+.max{
+    border: 2px solid#66E900
+}
+.norm{
+    border: 2px solid#E9D100
+}
+.poor{
+    border: 2px solid#E97E00
+}
+.low{
+    border: 2px solid#E90000
 }
 
 
