@@ -8,7 +8,7 @@ function transformDate(movie) {
     totalPages: movie.total_pages,
     voteAverage: movie.vote_average,
     genreIds: movie.genre_ids,
-    ratingStar: movie.rating,
+    rating: movie.rating,
   };
 }
 function transformSession(session) {

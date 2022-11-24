@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import { Component } from 'react';
 import { Alert, Spin, Pagination } from 'antd';
 import { Offline, Online } from 'react-detect-offline';
@@ -9,6 +10,7 @@ import './App.css';
 import MovieSearch from '../MovieSearch';
 import { GenresProvider } from '../Genres-context/Genres-context';
 import MovieHeader from '../MovieHeader';
+import ArrModify from '../../Handlers/ArrModify';
 
 export default class App extends Component {
   movieDbService = new MovieDbService();
@@ -25,26 +27,24 @@ export default class App extends Component {
   };
 
   componentDidMount() {
-    this.onLoadMovies();
+    this.onLoadAll();
     this.onLoadGenres();
-    this.onLoadSessionId();
-  }
-
-  componentDidUpdate(_, prevState) {
-    const { currentPage, query, filter } = this.state;
-
-    if (prevState.query !== query || prevState.currentPage !== currentPage) {
-      if (filter === 'search') this.onLoadMovies();
-      else this.onGetRated();
-    }
   }
 
   onSearchMovies = (term) => {
-    this.setState({ query: term, loading: true, error: false });
+    if (term.length >= 1) {
+      this.setState({ query: term, loading: true, error: false });
+      this.onLoadAll(term, this.state.currentPage, this.state.filter);
+    } else {
+      const world = 'return';
+      this.setState({ query: world, loading: true, error: false });
+      this.onLoadAll(world, this.state.currentPage, this.state.filter);
+    }
   };
 
-  onCurrentPage = (page) => {
-    this.setState({ loading: true, error: false, currentPage: page });
+  onPageChange = (page) => {
+    this.setState({ currentPage: page, loading: true, error: false });
+    this.onLoadAll(this.state.query, page, this.state.filter);
   };
 
   onError = () => {
@@ -56,57 +56,13 @@ export default class App extends Component {
 
   onFilterChange = (name) => {
     if (name === 'search') {
-      this.onLoadMovies();
+      this.onLoadAll('return', 1, 'search');
       this.setState({ currentPage: 1 });
     } else {
-      this.onGetRated();
+      this.onLoadAll('return', 1, 'rated');
     }
-    this.setState({ loading: true, filter: name });
+    this.setState({ loading: true, filter: name, currentPage: 1 });
   };
-
-  onGetRated() {
-    const guestSessionId = localStorage.getItem('guestSessionId');
-    const { currentPage } = this.state;
-    this.movieDbService
-      .getMovieRating(guestSessionId, currentPage)
-      .then((res) => {
-        console.log(res);
-        this.setState({
-          movies: res.results,
-          loading: false,
-          totalPages: res.total_pages,
-        });
-      })
-      .catch(this.onError);
-  }
-
-  onLoadSessionId() {
-    this.movieDbService
-      .getSessionMovie()
-      .then((res) => {
-        console.log(res);
-        localStorage.setItem('guestSessionId', res.guestSessionId);
-      })
-      .catch(this.onError);
-  }
-
-  onLoadMovies() {
-    const { query, currentPage } = this.state;
-    if (query.length >= 1) {
-      this.movieDbService
-        .getSearchMovie(query, currentPage)
-        .then((res) => {
-          this.setState({
-            movies: res.results,
-            loading: false,
-            totalPages: res.total_pages,
-          });
-        })
-        .catch(this.onError);
-    } else {
-      this.setState({ query: 'return' });
-    }
-  }
 
   onLoadGenres() {
     this.movieDbService
@@ -117,6 +73,27 @@ export default class App extends Component {
         });
       })
       .catch(this.onError);
+  }
+
+  async onLoadAll(query = 'return', page = 1, filter = 'search') {
+    try {
+      let sessionId = localStorage.getItem('guestSessionId');
+      if (!sessionId) {
+        const { guestSessionId } = await this.movieDbService.getSessionMovie();
+        await localStorage.setItem('guestSessionId', guestSessionId);
+        sessionId = guestSessionId;
+      }
+      const res = await this.movieDbService.getSearchMovie(query, page);
+      const ratedRes = await this.movieDbService.getMovieRating(sessionId, page);
+      const newArr = ArrModify(res, ratedRes);
+      this.setState({
+        movies: filter === 'search' ? newArr : ratedRes.results,
+        loading: false,
+        totalPages: filter === 'search' ? res.total_pages : ratedRes.total_pages,
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
   render() {
@@ -132,7 +109,7 @@ export default class App extends Component {
         showSizeChanger={false}
         current={currentPage}
         total={totalPages * 10}
-        onChange={this.onCurrentPage}
+        onChange={this.onPageChange}
       />
     );
     return (

@@ -17,10 +17,10 @@ export default class MovieDbService {
     }
   }
 
-  async PostRate(url, method, data) {
+  async PostRate(url, metod, data) {
     try {
       const res = await fetch(`${this.apiBase}${url}`, {
-        method: 'POST',
+        method: metod,
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
         },
@@ -59,13 +59,8 @@ export default class MovieDbService {
   }
 
   async setMovieRating(value, movieId, guestSessionId) {
-    const res = await this.PostRate(
-      `/movie/${movieId}/rating?api_key=${this.apiKey}&guest_session_id=${guestSessionId}`,
-      'POST',
-      {
-        value,
-      }
-    );
-    return res;
+    await this.PostRate(`/movie/${movieId}/rating?api_key=${this.apiKey}&guest_session_id=${guestSessionId}`, 'POST', {
+      value,
+    });
   }
 }
