@@ -1,5 +1,4 @@
 import './MovieList.css';
-
 import { Alert } from 'antd';
 
 import MovieListItem from '../MovieListItem/MovieListItem';

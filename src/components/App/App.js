@@ -32,14 +32,8 @@ export default class App extends Component {
   }
 
   onSearchMovies = (term) => {
-    if (term.length >= 1) {
-      this.setState({ query: term, loading: true, error: false });
-      this.onLoadAll(term, this.state.currentPage, this.state.filter);
-    } else {
-      const world = 'return';
-      this.setState({ query: world, loading: true, error: false });
-      this.onLoadAll(world, this.state.currentPage, this.state.filter);
-    }
+    this.setState({ query: term, loading: true, error: false });
+    this.onLoadAll(term, this.state.currentPage);
   };
 
   onPageChange = (page) => {
@@ -92,7 +86,7 @@ export default class App extends Component {
         totalPages: filter === 'search' ? res.total_pages : ratedRes.total_pages,
       });
     } catch (err) {
-      throw new Error(err);
+      this.onError();
     }
   }
 
