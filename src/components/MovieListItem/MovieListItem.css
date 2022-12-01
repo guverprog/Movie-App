@@ -7,6 +7,48 @@
     overflow: hidden;
     position: relative;
 }
+@media (max-width:974px){
+    .movie-list__item{
+        width:45%
+    }
+    .item__image{
+        position: absolute;
+        width: 25%;
+        height: 50%;
+    }
+    .movie-list__item-right{
+        margin-left: 0px;
+    }
+    .item__mobile{
+        margin-left: 92px;
+    }
+    .item__description{
+        width: 100%;
+        position: absolute;
+        left: 10px;
+        bottom: 45px;
+    }
+}
+@media (max-width:770px){
+    .movie-list__item{
+        width:90%;
+        margin: 10px 0 0 30px;
+    }
+    .item__mobile{
+        margin-left: 150px;
+    }
+   
+}
+@media (max-width:470px){
+    .movie-list__item{
+        width:90%;
+        margin: 10px auto;
+    }
+    .item__mobile{
+        margin-left: 92px;
+    }
+    
+}
 .movie-list__item-right{
     margin-left: 20px;
 }

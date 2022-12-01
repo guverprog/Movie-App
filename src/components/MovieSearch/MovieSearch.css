@@ -8,3 +8,8 @@
     line-height: 22px;
     text-indent: 12px;
 }
+@media (max-width:974px){
+    .movie-search{
+        margin: auto 20px;
+    }
+}

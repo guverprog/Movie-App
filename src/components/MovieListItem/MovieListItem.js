@@ -46,17 +46,19 @@ function MovieListItem(props) {
 
   return (
     <div className="movie-list__item item">
-      <img src={posterMovie} alt="movie_image" />
+      <img src={posterMovie} alt="movie_image" className="item__image" />
       <div className="movie-list__item-right">
-        <div className="item__header">
-          <h1 className="item__title">{itemProps.originalTitle}</h1>
-          <div className={`item__average-vote ${elementAverageRating(itemProps.voteAverage)}`}>
-            {itemProps.voteAverage}
+        <div className="item__mobile">
+          <div className="item__header">
+            <h1 className="item__title">{itemProps.originalTitle}</h1>
+            <div className={`item__average-vote ${elementAverageRating(itemProps.voteAverage)}`}>
+              {itemProps.voteAverage}
+            </div>
           </div>
-        </div>
-        <p className="item__data">{dateFns} </p>
-        <div>
-          <GenresConsumer>{(genres) => concatIds(genres, itemProps.genreIds)}</GenresConsumer>
+          <p className="item__data">{dateFns} </p>
+          <div>
+            <GenresConsumer>{(genres) => concatIds(genres, itemProps.genreIds)}</GenresConsumer>
+          </div>
         </div>
         <p className="item__description">{cutDescription}</p>
         <RateMovie ratingStar={itemProps.rating} movieId={movieId} />
